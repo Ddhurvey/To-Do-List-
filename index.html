@@ -4,18 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List - @Devendra & @Sunil</title>
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1995/1995467.png" type="image/png">
+    <title>To-Do List - Aurora Lights Edition</title>
+    <!-- Favicon -->
     <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
 </head>
 
 <body>
     <div class="container">
         <div class="aurora-bg"></div>
         <div class="todo-app">
-            <h2>✨ To-Do List <img src="https://cdn-icons-png.flaticon.com/512/1995/1995467.png" alt="icon"></h2>
+            <h2>
+                <svg class="app-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                To-Do List
+            </h2>
             <div class="row">
-                <input type="text" id="input-box" placeholder="Add your tasks...">
+                <input type="text" id="input-box" placeholder="✨ Add your tasks...">
                 <button onclick="addTask()">Add</button>
             </div>
             <ul id="list-container"></ul>

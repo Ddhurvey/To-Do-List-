@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyberpunk To-Do</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👾</text></svg>">
+    <title>To-Do List</title>
+    <link rel="icon" href="images/icon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
 </head>
+
 <body>
     <div class="stars"></div>
     <div class="custom-cursor"></div>
     <div class="container">
-        <header class="main-header">
-            <h1>SYSTEM.TASKS</h1>
-        </header>
-
-        <main class="todo-app">
-            <div class="input-container">
-                <input type="text" id="input-box" placeholder="Initiate new task...">
-                <button class="add-button" aria-label="Add Task">+</button>
+        <div class="todo-app">
+            <h2>To-Do List <img src="images/icon.png"></h2>
+            <div class="row">
+                <input type="text" id="input-box" placeholder="Add your text">
+                <button onclick="addTask()">Add</button>
             </div>
             <ul id="list-container">
-                <!-- Tasks will be dynamically inserted here -->
+                <li class="checked">Task 1</li>
+                <li>Task 2</li>
+                <li>Task 3</li>
             </ul>
-        </main>
-
-        <aside class="side-panel left-panel">
-            <div class="panel-content">STATUS: ONLINE</div>
-        </aside>
-        <aside class="side-panel right-panel">
-            <div class="panel-content">PRIORITY: HIGH</div>
-        </aside>
+        </div>
     </div>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

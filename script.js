@@ -5,51 +5,82 @@ const listContainer = document.getElementById("list-container");
 function loadTasks() {
     const savedTasks = localStorage.getItem("tasks");
     if (savedTasks) {
-        listContainer.innerHTML = savedTasks;
-        addListeners();
+        try {
+            listContainer.innerHTML = savedTasks;
+            attachEventListeners();
+        } catch (error) {
+            console.error("Error loading tasks:", error);
+            listContainer.innerHTML = "";
+        }
     }
 }
 
 // Add a new task
 function addTask() {
-    if (inputBox.value === "") {
-        alert("You must write something!");
+    const taskValue = inputBox.value.trim();
+    
+    if (taskValue === "") {
+        inputBox.focus();
+        inputBox.classList.add("shake");
+        setTimeout(() => inputBox.classList.remove("shake"), 500);
         return;
     }
 
     const li = document.createElement("li");
-    li.textContent = inputBox.value;
+    li.innerHTML = `
+        <span class="task-text">${escapeHtml(taskValue)}</span>
+        <span class="delete-btn">×</span>
+    `;
     
-    // Create delete button
-    const deleteBtn = document.createElement("span");
-    deleteBtn.innerHTML = "\u00d7"; // × symbol
-    deleteBtn.className = "delete-btn";
-    deleteBtn.onclick = function() {
-        this.parentElement.remove();
-        saveTasks();
-    };
-    
-    li.appendChild(deleteBtn);
     listContainer.appendChild(li);
-    
     inputBox.value = "";
+    inputBox.focus();
     saveTasks();
-    addListeners();
+    attachEventListeners();
 }
 
-// Add event listeners to list items
-function addListeners() {
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Attach event listeners to list items
+function attachEventListeners() {
     const listItems = document.querySelectorAll("li");
     listItems.forEach(item => {
-        if (!item.hasListener) {
-            item.onclick = function(e) {
-                // Only toggle checked if clicking on text, not the delete button
-                if (e.target.className !== "delete-btn") {
-                    this.classList.toggle("checked");
+        const deleteBtn = item.querySelector(".delete-btn");
+        const taskText = item.querySelector(".task-text");
+        
+        // Remove old listeners
+        item.onclick = null;
+        if (deleteBtn) deleteBtn.onclick = null;
+        
+        // Toggle checked on task text click
+        if (taskText) {
+            taskText.addEventListener("click", function(e) {
+                e.stopPropagation();
+                item.classList.toggle("checked");
+                saveTasks();
+            });
+        }
+        
+        // Delete task on × click
+        if (deleteBtn) {
+            deleteBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                item.style.animation = "slideOut 0.3s ease forwards";
+                setTimeout(() => {
+                    item.remove();
                     saveTasks();
-                }
-            };
-            item.hasListener = true;
+                }, 300);
+            });
         }
     });
 }
@@ -68,28 +99,3 @@ inputBox.addEventListener("keypress", function(event) {
 
 // Load tasks when page loads
 window.addEventListener("load", loadTasks);
-
-// --- Custom Cursor Logic ---
-const cursor = document.querySelector('.custom-cursor');
-
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
-
-document.addEventListener('mousedown', () => {
-    cursor.classList.add('clicked');
-});
-
-document.addEventListener('mouseup', () => {
-    cursor.classList.remove('clicked');
-});
-
-const interactiveElements = document.querySelectorAll('button, .task-text, .delete-icon');
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('pointer'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('pointer'));
-});
-
-// --- Initial Load ---
-document.addEventListener('DOMContentLoaded', showTasks);
